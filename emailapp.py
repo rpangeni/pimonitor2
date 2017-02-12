@@ -40,7 +40,7 @@ def get_first_text_block(email_message_instance):
     if maintype == 'multipart':
         for part in email_message_instance.get_payload():
             if part.get_content_maintype() == 'text':
-                return part.get_payload()
+                return part.get_payload(decode = True)
     elif maintype == 'text':
         return email_message_instance.get_payload()
 
@@ -49,6 +49,7 @@ def checkEmail(mail_user, mail_secret):
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
     mail.login(mail_user, mail_secret)
     mail.list()
+    caps = mail._get_capabilities()
     # Out: list of "folders" aka labels in gmail.
     mail.select("inbox")  # connect to inbox.
     result, data = mail.uid('search', None, "ALL")  # search and return uids instead
