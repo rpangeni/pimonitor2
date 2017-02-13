@@ -58,7 +58,9 @@ def main():
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('gmail', 'v1', http=http)
 
-    results = service.users().labels().list(userId='me').execute()
+    #results = service.users().labels().list(userId='me').execute()
+    results = service.users().messages().list(userId='me').execute()
+    mesg = service.users().messages().get(userId='me', messageId = results['messages'][0]['id']).execute()
     labels = results.get('labels', [])
 
     if not labels:
